@@ -1,3 +1,5 @@
+package interview;
+
 public class Interview2 {
 
     public static void main(String[] args) {
@@ -31,5 +33,7 @@ public class Interview2 {
             System.out.println(string);
         }
 
+        System.out.println(arr);
+        
     }
 }
