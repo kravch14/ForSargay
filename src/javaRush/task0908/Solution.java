@@ -34,7 +34,7 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        String binaryNumber = "100111010000";
+        String binaryNumber = "111001110100001111";
         System.out.println("Двоичное число " + binaryNumber + " равно шестнадцатеричному числу " + toHex(binaryNumber));
         String hexNumber = "9d0";
         System.out.println("Шестнадцатеричное число " + hexNumber + " равно двоичному числу " + toBinary(hexNumber));
@@ -67,19 +67,19 @@ public class Solution {
         }
     }
 
-    public static String padLeftZeros(String input, int length) {
+    private static String padLeftZeros(String input, int length) {
         int missingLength = length - input.length();
         if (missingLength <= 0)
             return input;
         return "0".repeat(missingLength) + input;
     }
 
-    public static String partToHex(String part) {
+    private static String partToHex(String part) {
         String result = hashMapToHex.get(part);
         return Objects.requireNonNull(result, "Unable to convert binary string to hex string. Details: " + part);
     }
 
-    public static String partToBin(String part) {
+    private static String partToBin(String part) {
         String result = hashMapToBin.get(part);
         return Objects.requireNonNull(result, "Unable to convert hex string to binary string. Details: " + part);
     }
