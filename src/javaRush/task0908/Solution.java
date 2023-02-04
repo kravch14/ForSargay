@@ -1,6 +1,7 @@
 package javaRush.task0908;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Solution {
@@ -27,22 +28,9 @@ public class Solution {
         hashMapToBin.put("f", "1111");
 
         hashMapToHex = new HashMap<>();
-        hashMapToHex.put("0000", "0");
-        hashMapToHex.put("0001", "1");
-        hashMapToHex.put("0010", "2");
-        hashMapToHex.put("0011", "3");
-        hashMapToHex.put("0100", "4");
-        hashMapToHex.put("0101", "5");
-        hashMapToHex.put("0110", "6");
-        hashMapToHex.put("0111", "7");
-        hashMapToHex.put("1000", "8");
-        hashMapToHex.put("1001", "9");
-        hashMapToHex.put("1010", "a");
-        hashMapToHex.put("1011", "b");
-        hashMapToHex.put("1100", "c");
-        hashMapToHex.put("1101", "d");
-        hashMapToHex.put("1110", "e");
-        hashMapToHex.put("1111", "f");
+        for (Map.Entry<String, String> pair: hashMapToBin.entrySet()) {
+            hashMapToHex.put(pair.getValue(), pair.getKey());
+        }
     }
 
     public static void main(String[] args) {
@@ -51,8 +39,8 @@ public class Solution {
         String hexNumber = "9d0";
         System.out.println("Шестнадцатеричное число " + hexNumber + " равно двоичному числу " + toBinary(hexNumber));
     }
-    public static String toHex(String input) {
 
+    public static String toHex(String input) {
         StringBuilder result = new StringBuilder();
         try {
             int step = 1 + (input.length() - 1) % 4;
@@ -65,11 +53,13 @@ public class Solution {
             return "";
         }
     }
+
     public static String toBinary(String input) {
         StringBuilder result = new StringBuilder();
         try {
             for (int i = 0; i < input.length(); i++) {
-                result.append(partToBin(Character.toString(input.charAt(i))));
+                String part = input.substring(i, i + 1);
+                result.append(partToBin(part));
             }
             return result.toString();
         } catch (Exception e) {
@@ -77,26 +67,20 @@ public class Solution {
         }
     }
 
-    public static String padLeftZeros(String inputString, int length) {
-        if (inputString.length() >= length) {
-            return inputString;
-        }
-        StringBuilder sb = new StringBuilder();
-        while (sb.length() < length - inputString.length()) {
-            sb.append('0');
-        }
-        sb.append(inputString);
-
-        return sb.toString();
+    public static String padLeftZeros(String input, int length) {
+        int missingLength = length - input.length();
+        if (missingLength <= 0)
+            return input;
+        return "0".repeat(missingLength) + input;
     }
 
     public static String partToHex(String part) {
         String result = hashMapToHex.get(part);
-        return Objects.requireNonNull(result, "No match found in dictionary");
+        return Objects.requireNonNull(result, "Unable to convert binary string to hex string. Details: " + part);
     }
 
     public static String partToBin(String part) {
         String result = hashMapToBin.get(part);
-        return Objects.requireNonNull(result, "No match found in dictionary");
+        return Objects.requireNonNull(result, "Unable to convert hex string to binary string. Details: " + part);
     }
 }
