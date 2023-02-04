@@ -1,4 +1,4 @@
-package com.javarush.task.pro.task09.task0908;
+package javaRush.task0908;
 
 import java.util.HashMap;
 import java.util.Map;
