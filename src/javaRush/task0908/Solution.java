@@ -1,12 +1,11 @@
 package javaRush.task0908;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class Solution {
-    private static HashMap<String, String> hashMapToBin;
-    private static HashMap<String, String> hashMapToHex;
+    private static final HashMap<String, String> hashMapToBin;
+    private static final HashMap<String, String> hashMapToHex;
 
     static {
         hashMapToBin = new HashMap<>();
@@ -27,93 +26,54 @@ public class Solution {
         hashMapToBin.put("e", "1110");
         hashMapToBin.put("f", "1111");
 
-        hashMapToBin = new HashMap<>();
-        hashMapToBin.put("0000", "0");
-        hashMapToBin.put("0001", "1");
-        hashMapToBin.put("0010", "2");
-        hashMapToBin.put("0011", "3");
-        hashMapToBin.put("0100", "4");
-        hashMapToBin.put("0101", "5");
-        hashMapToBin.put("0110", "6");
-        hashMapToBin.put("0111", "7");
-        hashMapToBin.put("1000", "8");
-        hashMapToBin.put("1001", "9");
-        hashMapToBin.put("1010", "a");
-        hashMapToBin.put("1011", "b");
-        hashMapToBin.put("1100", "c");
-        hashMapToBin.put("1101", "d");
-        hashMapToBin.put("1110", "e");
-        hashMapToBin.put("1111", "f");
+        hashMapToHex = new HashMap<>();
+        hashMapToHex.put("0000", "0");
+        hashMapToHex.put("0001", "1");
+        hashMapToHex.put("0010", "2");
+        hashMapToHex.put("0011", "3");
+        hashMapToHex.put("0100", "4");
+        hashMapToHex.put("0101", "5");
+        hashMapToHex.put("0110", "6");
+        hashMapToHex.put("0111", "7");
+        hashMapToHex.put("1000", "8");
+        hashMapToHex.put("1001", "9");
+        hashMapToHex.put("1010", "a");
+        hashMapToHex.put("1011", "b");
+        hashMapToHex.put("1100", "c");
+        hashMapToHex.put("1101", "d");
+        hashMapToHex.put("1110", "e");
+        hashMapToHex.put("1111", "f");
     }
 
     public static void main(String[] args) {
-        String binaryNumber = "111100211010000";
+        String binaryNumber = "100111010000";
         System.out.println("Двоичное число " + binaryNumber + " равно шестнадцатеричному числу " + toHex(binaryNumber));
-        //String hexNumber = "9d0";
-        //System.out.println("Шестнадцатеричное число " + hexNumber + " равно двоичному числу " + toBinary(hexNumber));
+        String hexNumber = "9d0";
+        System.out.println("Шестнадцатеричное число " + hexNumber + " равно двоичному числу " + toBinary(hexNumber));
     }
-    public static String toHex(String binaryNumber) {
+    public static String toHex(String input) {
 
-        StringBuilder sbOfHexNum = new StringBuilder();
-        String result;
+        StringBuilder result = new StringBuilder();
         try {
-            StringBuilder sbOfBinNum = new StringBuilder(binaryNumber);
-            int step = 1 + (binaryNumber.length() - 1) % 4;
-            for (int i = 0; i < binaryNumber.length(); i += step, step = 4) {
-                for (Map.Entry<String, String> pair : hashMapToBin.entrySet()) {
-                    if (padLeftZeros(sbOfBinNum.substring(i, i + step), 4).equals(pair.getKey())) {
-                        sbOfHexNum.append(pair.getValue());
-                        break;
-                    }
-                }
+            int step = 1 + (input.length() - 1) % 4;
+            for (int i = 0; i < input.length(); i += step, step = 4) {
+                String part = padLeftZeros(input.substring(i, i + step), 4);
+                result.append(partToHex(part));
             }
-            result = sbOfHexNum.toString();
+            return result.toString();
         } catch (Exception e) {
-            result = "";
+            return "";
         }
-        return result;
     }
-    /*String hexNumber = "";
-    if (Objects.equals(binaryNumber, "") || binaryNumber == null) {
-        return hexNumber;
-    } else if (binaryNumber.matches(".*[^01].*")) {
-        return hexNumber;
-    } else {
-        if (binaryNumber.length() % 4 != 0) {
-            int originLength = binaryNumber.length() % 4;
-            for (int i = 0; i < 4 - originLength; i++) {
-                binaryNumber = 0 + binaryNumber;
+    public static String toBinary(String input) {
+        StringBuilder result = new StringBuilder();
+        try {
+            for (int i = 0; i < input.length(); i++) {
+                result.append(partToBin(Character.toString(input.charAt(i))));
             }
-        }
-        while (!Objects.equals(binaryNumber, "")) {
-            String temp = binaryNumber.substring(0, 4);
-            for (Map.Entry<String, String> pair : hashMapToBin.entrySet()) {
-                if (temp.equalsIgnoreCase(pair.getValue())) {
-                    hexNumber = hexNumber + pair.getKey();
-                    break;
-                }
-            }
-            binaryNumber = binaryNumber.replaceFirst(temp, "");
-        }
-        return hexNumber;
-    }
-}*/
-    public static String toBinary(String hexNumber) {
-        String binaryNumber = "";
-        if (Objects.equals(hexNumber, "") || hexNumber == null) {
-            return binaryNumber;
-        } else if (hexNumber.matches(".*[[^0-9]&&[^a-f]].*")) {
-            return binaryNumber;
-        } else {
-            for (int i = 0; i < hexNumber.length(); i++) {
-                for (Map.Entry<String, String> pair : hashMapToBin.entrySet()) {
-                    if ((hexNumber.charAt(i) + "").equalsIgnoreCase(pair.getKey())) {
-                        binaryNumber = binaryNumber + pair.getValue();
-                        break;
-                    }
-                }
-            }
-            return binaryNumber;
+            return result.toString();
+        } catch (Exception e) {
+            return "";
         }
     }
 
@@ -128,5 +88,15 @@ public class Solution {
         sb.append(inputString);
 
         return sb.toString();
+    }
+
+    public static String partToHex(String part) {
+        String result = hashMapToHex.get(part);
+        return Objects.requireNonNull(result, "No match found in dictionary");
+    }
+
+    public static String partToBin(String part) {
+        String result = hashMapToBin.get(part);
+        return Objects.requireNonNull(result, "No match found in dictionary");
     }
 }
